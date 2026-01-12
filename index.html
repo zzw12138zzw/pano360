@@ -14,11 +14,17 @@
     html, body {
       margin: 0;
       height: 100%;
-      display: flex;
     }
+
+    body {
+      display: flex;
+      flex-direction: row;
+      height: 100vh; /* 确保 flex 父容器高度 */
+    }
+
     /* 左侧列表 */
     #sceneList {
-      width: 200px;
+      width: 100px;
       background: #f2f2f2;
       padding: 10px;
       box-sizing: border-box;
@@ -34,6 +40,7 @@
     /* 右侧 360 容器 */
     #pano {
       flex: 1;
+      min-width: 100; /* 修复 flex-item 内容溢出时不显示 */
       height: 100%;
     }
   </style>
@@ -42,8 +49,8 @@
 
 <!-- 左侧场景列表 -->
 <div id="sceneList">
-  <button onclick="switchScene('1')">一号</button>
-  <button onclick="switchScene('2')">二号</button>
+  <button onclick="switchScene('scene1')">一号</button>
+  <button onclick="switchScene('scene2')">二号</button>
   <!-- <button onclick="switchScene('kitchen')">厨房</button> -->
 </div>
 
@@ -54,18 +61,20 @@
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 <script>
   // 定义场景数据
-  const scenes = {
-    1: "pano.jpg",
-    2: "dawn.jpg",
-    // kitchen: "kitchen.jpg"
+  const scenesData = {
+    scene1: { type: "equirectangular", panorama: "dawn.jpg" },
+    scene2: { type: "equirectangular", panorama: "pano.jpg" },
+    // kitchen: { type: "equirectangular", panorama: "kitchen.jpg" }
   };
 
   // 创建 Pannellum Viewer
   const viewer = pannellum.viewer('pano', {
-    type: "equirectangular",
-    panorama: scenes['1'],  // 默认场景
-    autoLoad: true,
-    showZoomCtrl: true
+    default: {
+      firstScene: "scene1",
+      autoLoad: true,
+      sceneFadeDuration: 1000
+    },
+    scenes: scenesData
   });
 
   // 切换场景函数
@@ -73,10 +82,10 @@
     viewer.loadScene(sceneId);  // Pannellum 默认 loadScene 需要场景对象
   }
 
-  // 让 loadScene 能用场景列表
-  for (let id in scenes) {
-    viewer.addScene(id, { type: "equirectangular", panorama: scenes[id] });
-  }
+  // 窗口大小变化自动调整
+  window.addEventListener('resize', () => {
+    viewer.resize();
+  });
 </script>
 
 </body>
