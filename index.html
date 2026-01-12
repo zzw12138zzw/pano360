@@ -39,16 +39,22 @@
       z-index: 10;
       overflow-x: auto;
       max-width: 90%;
+      min-width: 10%;
       box-sizing: border-box;
+      scroll-behavior: smooth;
     }
 
     #thumbBar img {
+      /* width: 200px;   
+      height: auto;  */
       object-fit: cover;
       cursor: pointer;
       border: 2px solid transparent;
       border-radius: 5px;
       transition: border 0.2s;
       object-fit: cover;
+      margin: 0 5px; /* 手指触控间距 */
+      touch-action: manipulation; /* 提升触控响应 */
     }
 
     #thumbBar img:hover {
@@ -59,17 +65,17 @@
       border: 2px solid #00ffff;
     }
       /* 响应式缩略图大小 */
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       #thumbBar img {
-        width: 60px;
-        height: 40px;
+        width: 200px;
+        height: auto;
       }
     }
 
-    @media (min-width: 769px) {
+    @media (min-width: 768px) {
       #thumbBar img {
         width: 80px;
-        height: 50px;
+        height: auto;
       }
     }
 
