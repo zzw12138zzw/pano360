@@ -14,54 +14,69 @@
     html, body {
       margin: 0;
       height: 100%;
+      display: flex;
     }
-    #pano {
+    /* 左侧列表 */
+    #sceneList {
+      width: 200px;
+      background: #f2f2f2;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    #sceneList button {
       width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* 右侧 360 容器 */
+    #pano {
+      flex: 1;
       height: 100%;
     }
   </style>
 </head>
 <body>
 
+<!-- 左侧场景列表 -->
+<div id="sceneList">
+  <button onclick="switchScene('1')">一号</button>
+  <button onclick="switchScene('2')">二号</button>
+  <!-- <button onclick="switchScene('kitchen')">厨房</button> -->
+</div>
+
+<!-- 右侧 360 渲染器 -->
 <div id="pano"></div>
 
 <!-- Pannellum JS -->
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
-
 <script>
-  pannellum.viewer('pano', {
-    default: {
-      firstScene: "1",
-      autoLoad: true,
-      sceneFadeDuration: 1000
-    },
-    scenes: {
-      1: {
-        type: "equirectangular",
-        panorama: "pano.jpg",
-        hotSpots: [
-          {
-            pitch: -5,
-            yaw: 120,
-            type: "scene",
-            sceneId: "1"
-          }
-        ]
-      },
-      2: {
-        type: "equirectangular",
-        panorama: "dawn.jpg",
-        hotSpots: [
-          {
-            pitch: -10,
-            yaw: -60,
-            type: "scene",
-            sceneId: "2"
-          }
-        ]
-      }
-    }
+  // 定义场景数据
+  const scenes = {
+    1: "pano.jpg",
+    2: "dawn.jpg",
+    // kitchen: "kitchen.jpg"
+  };
+
+  // 创建 Pannellum Viewer
+  const viewer = pannellum.viewer('pano', {
+    type: "equirectangular",
+    panorama: scenes['1'],  // 默认场景
+    autoLoad: true,
+    showZoomCtrl: true
   });
+
+  // 切换场景函数
+  function switchScene(sceneId) {
+    viewer.loadScene(sceneId);  // Pannellum 默认 loadScene 需要场景对象
+  }
+
+  // 让 loadScene 能用场景列表
+  for (let id in scenes) {
+    viewer.addScene(id, { type: "equirectangular", panorama: scenes[id] });
+  }
 </script>
 
 </body>
