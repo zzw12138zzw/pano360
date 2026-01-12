@@ -30,10 +30,37 @@
 
 <script>
   pannellum.viewer('pano', {
-    type: "equirectangular",
-    panorama: "pano.jpg",
-    autoLoad: true,
-    showZoomCtrl: true
+    default: {
+      firstScene: "1",
+      autoLoad: true,
+      sceneFadeDuration: 1000
+    },
+    scenes: {
+      1: {
+        type: "equirectangular",
+        panorama: "pano.jpg",
+        hotSpots: [
+          {
+            pitch: -5,
+            yaw: 120,
+            type: "scene",
+            sceneId: "1"
+          }
+        ]
+      },
+      2: {
+        type: "equirectangular",
+        panorama: "dawn.jpg",
+        hotSpots: [
+          {
+            pitch: -10,
+            yaw: -60,
+            type: "scene",
+            sceneId: "2"
+          }
+        ]
+      }
+    }
   });
 </script>
 
